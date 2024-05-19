@@ -1,5 +1,7 @@
 package Models;
 
+import java.util.Random;
+
 public class Persona {
     private String name = null;
     private Integer age = 0;
@@ -17,10 +19,10 @@ public class Persona {
         this.genre = genre;
     }
 
-    public Persona(String name, Integer age, String dni, Character genre, Double weight, Double height) {
+    public Persona(String name, Integer age, Character genre, Double weight, Double height) {
         this.name = name;
         this.age = age;
-        this.dni = dni;
+        this.dni = generaDNI();
         this.genre = genre;
         this.weight = weight;
         this.height = height;
@@ -74,48 +76,67 @@ public class Persona {
         this.height = height;
     }
 
-    public void imc(Persona p){
-        Double result =weight/(height*height);
-        if(result<20){
-            System.out.println("Bajo peso");
-        }else if(result>=20 && result<=25){
-            System.out.println("Peso normal");
-        }else{
-            System.out.println("sobre peso");
+    public Integer imc(Persona p) {
+        double indice = p.getWeight() / (p.getHeight() * p.getHeight());
+        Integer result = 0;
+
+        if (indice < 20) {
+            result = -1;
+        } else if (indice > 25) {
+            result = 1;
         }
+        return result;
     }
-    public Boolean age(Persona p){
-        boolean result;
-        if(age>18){
+
+    public Boolean age(Persona p) {
+        Boolean result=null;
+        if (p.getAge() > 18) {
             result = true;
-        }else {
+        } else {
             result = false;
         }
         return result;
     }
 
-    private Character checkGenre(Persona p){
-        if(genre != 'h' 'm'){
-
+    private void checkGenre(Persona p) {
+        Character aux=p.getGenre();
+        if ( aux != 'h' &&  aux !='m'){
+            System.out.println("Genero incorrecto:"+p.getGenre());
         }
     }
 
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", dni='" + dni + '\'' +
+                ", genre=" + genre +
+                ", weight=" + weight +
+                ", height=" + height +
+                '}';
+    }
+
+    // Método para generar el DNI
+    private String generaDNI() {
+        int numero = generaNumeroAleatorio();
+        char letra = calculaLetra(numero);
+        return String.format("%08d", numero);
+    }
+
+    // Genera un número aleatorio de 8 cifras
+    private int generaNumeroAleatorio() {
+        Random rand = new Random();
+        return 10000000 + rand.nextInt(90000000);
+    }
+
+    // Calcula la letra del DNI
+    private char calculaLetra(int numero) {
+        String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        return letras.charAt(numero % 23);
+    }
+
+
 }
 
-//Los métodos que se implementaran son:
-// calcularIMC(): calculara si la persona esta en su peso ideal (peso en
-//kg/(altura^2 en m)), si esta fórmula devuelve un valor menor que 20, la
-//función devuelve un -1, si devuelve un número entre 20 y 25 (incluidos),
-//significa que esta por debajo de su peso ideal la función devuelve un 0 y si
-//devuelve un valor mayor que 25 significa que tiene sobrepeso, la función
-//devuelve un 1. Te recomiendo que uses constantes para devolver estos
-//valores.
-//■ esMayorDeEdad(): indica si es mayor de edad, devuelve un booleano.
-//■ comprobarSexo(char sexo): comprueba que el sexo introducido es
-//correcto. Si no es correcto, sera H. No sera visible al exterior.
-//■ toString(): devuelve toda la información del objeto.
-//■ generaDNI(): genera un número aleatorio de 8 cifras, genera a partir
-//de este su número su letra correspondiente. Este método sera
-//invocado cuando se construya el objeto. Puedes dividir el método
-//para que te sea más fácil. No será visible al exterior.
-//■ Métodos set de cada parámetro, excepto de DNI.
+
