@@ -1,5 +1,7 @@
 import Models.Persona;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
@@ -19,7 +21,29 @@ public class Main {
         System.out.println("Ingrese el peso");
         p1.setWeight(scanner.nextDouble());
 
-        System.out.println(p1.toString());
+        //System.out.println(p1.toString());
+
+        //ACA COMIENZO A PROBAR METODOS DE MAP
+        Map<String,Persona> mapaPersona = new HashMap<>(); // <KEY,VALUE>
+
+        //PUT
+        mapaPersona.put(p1.getDni(), p1);
+
+        //CONTAINS VALUE (TRUE OR FALSE)
+        boolean estaOno= mapaPersona.containsValue(p1);
+        if(estaOno == true){
+            System.out.println("esta");
+        }else{
+            System.out.println("no esta");
+        }
+        //VALUES DEL MAP
+        System.out.println(mapaPersona.values());
+
+        //KEY SET = DEVUELVE LA KEY QUE CONTENGA MAP
+        System.out.println("KEY:"+mapaPersona.keySet());
+
+        String empleado = String.valueOf(String.valueOf(mapaPersona.get("1225")));
+
 
 
     }
